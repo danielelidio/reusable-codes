@@ -11,6 +11,15 @@
             imageBtnAdd: "images/inserir.gif",
             btnFechar: ".btnFechar",
             imageBtnFechar: "images/excluir.gif",
+            animate: false,
+            addAnimateFunction: function(item) {
+                $(item).toggle("slow");
+            },
+            removeAnimateFunction: function(item) {
+                $(item).toggle("slow", function() {
+                    item.remove();
+                })
+            },
         };
         
         if (typeof settings == 'undefined') {
@@ -23,16 +32,21 @@
  
         var addElement = function() {
             /** CRIA UM NOVO ÍTEM. */
-            var item = config.dinamicContent.clone();
-            item.appendTo(config.container);
+            var itemAdicionar = config.dinamicContent.clone();
+            itemAdicionar.appendTo(config.container);
             
             /** ADICIONA O BOTÃO DE REMOVER */
             var btnFechar = config.btnFechar.clone();
-            btnFechar.appendTo(item);
+            btnFechar.appendTo(itemAdicionar);
             
             
             /** ANIMA O ÍTEM */
-            item.toggle("slow");
+            if(config.animate) {
+                config.addAnimateFunction(itemAdicionar);
+            }
+            else {
+                itemAdicionar.show();
+            }
             
             
             /**
@@ -44,9 +58,14 @@
         };
         
         var removeElement = function(element) {
-            $(element).closest("li.dinamicItem").toggle("slow", function() {
-                $(element).closest("li.dinamicItem").remove();
-            });
+            var itemRemover = $(element).closest("li.dinamicItem");
+            
+            if(config.animate) {
+                config.removeAnimateFunction(itemRemover);
+            }
+            else {
+                itemRemover.remove();
+            }
         }
         
         
@@ -59,7 +78,7 @@
         config.dinamicContent = $(config.dinamicContent);
         
         
-        config.dinamicContent.wrap($("<li>").attr("class", "dinamicItem").hide());
+        config.dinamicContent.wrap($("<li>").attr("class", "dinamicItem").css("list-style-type", "none").hide());
         config.dinamicContent = config.dinamicContent.parent();
         config.dinamicContent.wrap("<ul>");
         config.dinamicContent.parent().wrap(config.container);
@@ -79,6 +98,7 @@
             /** CASO CONTRÁRIO CRIA-SE O BOTÃO E ADICIONA-SE UM LISTENER A ELE. */
             config.btnAdd = $("<li>")
                     .attr("class", config.btnAdd)
+                    .css("list-style-type", "none")
                     .html(" Adicionar ")
                     .click(function() {
                         addElement();
