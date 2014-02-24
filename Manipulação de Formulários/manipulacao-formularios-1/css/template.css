@@ -1,0 +1,41 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24/02/2014, 11:08:41
+    Author     : daniel
+*/
+
+body {
+    background-color: #FFFFFF;
+}
+
+.dinamicContainer {
+    width: 250px;
+    border: 1px solid #000000;
+}
+
+li.btnAdd {
+    list-style-type: none;
+    margin-left: -30px;
+    width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid #A0A0A0;
+    height: 50px;
+    background-color: #FAFAFA;
+    border: 1px dashed #000000;
+}
+
+li.dinamicItem {
+    list-style-type: none;
+    /*margin-left: -30px;*/
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid #A0A0A0;
+}
