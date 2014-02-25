@@ -38,6 +38,7 @@
             /** ADICIONA O BOTÃO DE REMOVER */
             var btnFechar = config.btnFechar.clone();
             btnFechar.appendTo(itemAdicionar);
+            $("<div>").css("clear", "both").appendTo(itemAdicionar);
             
             
             /** ANIMA O ÍTEM */
@@ -74,15 +75,15 @@
          */
         
         /** CONFIGURA O CONTAINER DE ELEMENTOS */
-        config.container = $("<div>").attr("class", config.container);
+        config.container = $("<div>").attr("class", config.container).css("display", "inline-block");
         config.dinamicContent = $(config.dinamicContent);
         
         
         config.dinamicContent.wrap($("<li>").attr("class", "dinamicItem").css("list-style-type", "none").hide());
         config.dinamicContent = config.dinamicContent.parent();
-        config.dinamicContent.wrap("<ul>");
+        config.dinamicContent.wrap($("<ul>"));
         config.dinamicContent.parent().wrap(config.container);
-        config.container = config.dinamicContent.parent().parent();
+        config.container = config.dinamicContent.parent();
         
 
         
@@ -96,19 +97,21 @@
         }
         else {
             /** CASO CONTRÁRIO CRIA-SE O BOTÃO E ADICIONA-SE UM LISTENER A ELE. */
-            config.btnAdd = $("<li>")
+            config.btnAdd = $("<div>")
                     .attr("class", config.btnAdd)
                     .css("list-style-type", "none")
+                    .css("text-align", "center")
                     .html(" Adicionar ")
                     .click(function() {
                         addElement();
                     })
-                    .appendTo(config.container);
+                    .appendTo(config.container.parent());
             
             /** CRIA-SE UMA IMAGEM REPRESENTATIVA PARA O BOTÃO. */
             config.imageBtnAdd = $("<img>").attr("src", config.imageBtnAdd);
             config.imageBtnAdd.prependTo(config.btnAdd);
         }
+        
         
         /**
          * CONFIGURA O BOTÃO FECHAR
@@ -117,7 +120,7 @@
             config.btnFechar = $(config.btnFechar);
         }
         else {
-            config.btnFechar = $("<div>").attr("class", config.btnFechar).html('<img src="'+ config.imageBtnFechar +'" />');
+            config.btnFechar = $("<div>").attr("class", config.btnFechar).css("display", "table-cell").html($("<img>").attr("src", config.imageBtnFechar).css("vertical-align", "middle"));
         }
                 
  
