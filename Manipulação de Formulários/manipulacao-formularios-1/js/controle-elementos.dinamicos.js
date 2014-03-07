@@ -11,6 +11,7 @@
             imageBtnAdd: "images/inserir.gif",
             btnFechar: ".btnFechar",
             imageBtnFechar: "images/excluir.gif",
+            editMode: false,
             animate: false,
             addAnimateFunction: function(item) {
                 $(item).toggle("slow");
@@ -32,7 +33,7 @@
  
         var addElement = function() {
             /** CRIA UM NOVO ÍTEM. */
-            var itemAdicionar = config.dinamicContent.clone();
+            var itemAdicionar = $(config.dinamicContentRaw).first().clone().hide();
             itemAdicionar.appendTo(config.container);
             
             /** ADICIONA O BOTÃO DE REMOVER */
@@ -78,13 +79,28 @@
         config.container = $("<div>").attr("class", config.container).css("display", "inline-block");
         config.dinamicContent = $(config.dinamicContent);
         
+        var li = $("<li>").attr("class", "dinamicItem").css("list-style-type", "none");
         
-        config.dinamicContent.wrap($("<li>").attr("class", "dinamicItem").css("list-style-type", "none").hide());
-        config.dinamicContent = config.dinamicContent.parent();
-        config.dinamicContent.wrap($("<ul>"));
-        config.dinamicContent.parent().wrap(config.container);
-        config.container = config.dinamicContent.parent();
+        if(config.editMode == true) {
+            config.dinamicContent.wrap(li);
+            config.dinamicContent = $(config.dinamicContent).parent();
+            config.dinamicContent.wrapAll($("<ul>"));
+            config.dinamicContent.parent().wrap(config.container);
+            config.container = $(config.dinamicContent.parent()).first();            
+        }
+        else {
+            li.hide();
+            config.dinamicContent.wrap(li);
+            config.dinamicContent = config.dinamicContent.parent();
+            config.dinamicContent.wrap($("<ul>"));
+            config.dinamicContent.parent().wrap(config.container);
+            config.container = $(config.dinamicContent.parent()).first();
+        }
         
+        /**
+         * CLONE DO ELEMENTO DINAMICO (SEM BOTÃO FECHAR CONFIGURADO) PARA SER CLONADO QUANDO FOR ADICIONAR ELEMENTOS.
+         */
+        config.dinamicContentRaw = config.dinamicContent.clone();
 
         
         /** CONFIGURA O BOTÃO ADICIONAR */
@@ -122,6 +138,15 @@
         else {
             config.btnFechar = $("<div>").attr("class", config.btnFechar).css("display", "table-cell").html($("<img>").attr("src", config.imageBtnFechar).css("vertical-align", "middle"));
         }
+        
+        /**
+         * CASO JÁ HAJA ELEMENTOS DINAMICOS NA TELA, INSERE O BOTÃO FECHAR NELES.
+         */
+        $(config.btnFechar.clone()).click(function() {
+            removeElement(this);
+        }).appendTo(config.dinamicContent);
+        
+        $("<div>").css("clear", "both").appendTo(config.dinamicContent);
                 
  
         return this;
