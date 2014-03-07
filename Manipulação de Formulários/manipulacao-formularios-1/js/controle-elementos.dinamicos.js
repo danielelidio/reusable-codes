@@ -21,6 +21,8 @@
                     item.remove();
                 })
             },
+            afterAdd: null,
+            afterRemove: null,
         };
         
         if (typeof settings == 'undefined') {
@@ -57,6 +59,10 @@
             btnFechar.click(function() {
                 removeElement(this);
             });
+            
+            if(typeof(config.afterAdd) == 'function') {
+                config.afterAdd(itemAdicionar);
+            }
         };
         
         var removeElement = function(element) {
@@ -67,6 +73,10 @@
             }
             else {
                 itemRemover.remove();
+            }
+            
+            if(typeof(config.afterRemove) == 'function') {
+                config.afterRemove(itemRemover);
             }
         }
         
